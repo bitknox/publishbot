@@ -1,0 +1,26 @@
+{
+	"log_channel_id": 520198413082558464,
+	"prefix":"!publishbot ",
+	"rate_limit": 8,
+	"rate_time": 120,
+	"channels": [
+		{
+			"channel_id": "740303779060121760",
+			"auto_publish": true,
+			"publish_delay": 10000,
+			"rate_limit": 6,
+			"rate_time": 120,
+            "priority": 0,
+            "minMessageLength": 50
+		},
+		{
+			"channel_id": "741024280652808312",
+			"auto_publish": true,
+			"publish_delay": 300,
+			"rate_limit": 2,
+			"rate_time": 120,
+            "priority": 5,
+			"minMessageLength": 50
+		}
+	]
+}
