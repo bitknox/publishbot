@@ -5,7 +5,7 @@ const client = new Discord.Client();
 var config = require('./config.json')
 const announcementChannels = new Discord.Collection()
 const readJson = require("./modules/jsonReader")
-const RateLimiter = require('./modules/200iqratelimit.js')
+const RateLimiter = require('./modules/ratelimiter.js')
 const PQLib = require('./datastructures/PQ.js')
 const queue = PQLib.PriorityQueue
 const queueNode = PQLib.Node
@@ -23,30 +23,7 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 
-/*
-		{
-			"channel_id": 12345,
-		//	"auto_publish": true,
-			"publish_delay": 300,
-		//	"rate_limit": 5,
-		//	"rate_time": 3600,
-            "priority": 0,
-          //  "minMessageLength": 50
-		},
-*/
 
-/*
-
-  guildOnly
-  global cooldown
-  personlig cooldown
-  helpMessage
-  aliases
-  prefix
-  blacklisted channels
-  whitelisted channels
-
-*/
 
 client.on('message', async message => {
 
@@ -125,14 +102,11 @@ function isRateLimited(message) {
 }
 
 
-//we should probably check if queue contains more important messages before publishing current
+
 async function publishMessage(message) {
     if (message.deleted) return;
     try {
-        //const resp = await crosspost(message)
-        message.channel.send("published")
-       
-        //client.channels.cache.get(config.log_channel_id).send("```"+resp+"```");
+        const resp = await crosspost(message)
         globalRateLimiter.addEvent();
         announcementChannels.get(message.channel.id).rateLimiter.addEvent()
     } catch(e) {
@@ -152,21 +126,3 @@ setInterval(postQueuedMessage,60000)
 
 
 client.login(process.env.TOKEN);
-
-
-/*
-
-dev-log:
-  publish_delay": 300,
-  rate_limit": 5,
-  rate_time": 3600,
-  priority": 50,
-
-
-vagt-kills: 
-  publish_delay": 300,
-  rate_limit": 5,
-  rate_time": 3600,
-  priority": 10
-
-  */
